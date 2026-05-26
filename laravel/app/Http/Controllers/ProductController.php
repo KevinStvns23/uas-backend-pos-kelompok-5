@@ -7,59 +7,64 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // 1. Menampilkan semua daftar barang
     public function index()
     {
-        //
+        $products = Product::all();
+        return view('products.index', compact('products'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    // 2. Menampilkan form untuk tambah barang baru
     public function create()
     {
-        //
+        return view('products.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // 3. Menyimpan data barang baru ke database
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|integer',
+            'stock' => 'required|integer',
+        ]);
+
+        Product::create($request->only('name', 'price', 'stock'));
+
+        return redirect()->route('products.index')->with('success', 'Barang ATK berhasil ditambahkan!');
     }
 
-    /**
-     * Display the specified resource.
-     */
+    // 4. Menampilkan detail 1 barang 
     public function show(Product $product)
     {
-        //
+        return view('products.show', compact('product'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    // 5. Menampilkan form untuk mengubah data barang
     public function edit(Product $product)
     {
-        //
+        return view('products.edit', compact('product'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    // 6. Menyimpan perubahan data barang ke database
     public function update(Request $request, Product $product)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|integer',
+            'stock' => 'required|integer',
+        ]);
+
+        $product->update($request->only('name', 'price', 'stock'));
+
+        return redirect()->route('products.index')->with('success', 'Data barang berhasil diupdate!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    // 7. Menghapus barang
     public function destroy(Product $product)
     {
-        //
+        $product->delete();
+
+        return redirect()->route('products.index')->with('success', 'Barang berhasil dihapus.');
     }
 }
