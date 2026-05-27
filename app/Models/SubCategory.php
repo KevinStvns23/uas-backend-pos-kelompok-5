@@ -11,7 +11,6 @@ class SubCategory extends Model
 
     protected $fillable = ['category_id', 'name', 'description'];
 
-    // Relasi ke Category utama
     public function category()
     {
         return $this->belongsTo(Category::class);
