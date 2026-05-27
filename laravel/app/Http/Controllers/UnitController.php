@@ -20,6 +20,11 @@ class UnitController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required|string|max:50',
+            'description' => 'nullable|string|max:255',
+        ]);
+
         Unit::create($request->all());
         return redirect()->route('units.index')->with('success', 'Satuan barang berhasil ditambahkan.');
     }
