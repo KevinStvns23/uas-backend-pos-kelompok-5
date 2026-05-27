@@ -17,4 +17,10 @@ class UnitController extends Controller
     {
         return view('units.create');
     }
+
+    public function store(Request $request)
+    {
+        Unit::create($request->all());
+        return redirect()->route('units.index')->with('success', 'Satuan barang berhasil ditambahkan.');
+    }
 }
