@@ -43,4 +43,10 @@ class UnitController extends Controller
         $unit->update($request->all());
         return redirect()->route('units.index')->with('success', 'Satuan barang berhasil diperbarui.');
     }
+    
+    public function destroy(Unit $unit)
+    {
+        $unit->delete();
+        return redirect()->route('units.index')->with('success', 'Satuan barang berhasil dihapus.');
+    }
 }
