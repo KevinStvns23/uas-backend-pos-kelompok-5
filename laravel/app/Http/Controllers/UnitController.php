@@ -28,4 +28,19 @@ class UnitController extends Controller
         Unit::create($request->all());
         return redirect()->route('units.index')->with('success', 'Satuan barang berhasil ditambahkan.');
     }
+    public function edit(Unit $unit)
+    {
+        return view('units.edit', compact('unit'));
+    }
+
+    public function update(Request $request, Unit $unit)
+    {
+        $request->validate([
+            'name' => 'required|string|max:50',
+            'description' => 'nullable|string|max:255',
+        ]);
+
+        $unit->update($request->all());
+        return redirect()->route('units.index')->with('success', 'Satuan barang berhasil diperbarui.');
+    }
 }
