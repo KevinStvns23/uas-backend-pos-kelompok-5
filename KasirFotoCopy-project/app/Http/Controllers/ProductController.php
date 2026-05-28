@@ -10,7 +10,7 @@ class ProductController extends Controller
     // 1. Menampilkan semua daftar barang
     public function index()
     {
-        $products = Product::all();
+        $products = Product::orderBy('name', 'asc')->get();
         return view('products.index', compact('products'));
     }
 
