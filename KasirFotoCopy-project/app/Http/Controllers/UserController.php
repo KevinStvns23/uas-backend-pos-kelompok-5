@@ -21,6 +21,18 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'username' => 'required',
+            'password' => 'required',
+            'nama_lengkap' => 'required',
+            'alamat' => 'required',
+            'no_telp' => 'required',
+            'shift' => 'required',
+            'check_in' => 'required',
+            'check_out' => 'required',
+            'status' => 'required',
+        ]);
+
         User::create($request->all());
 
         return redirect()->route('users.index');
@@ -38,6 +50,17 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
+        $request->validate([
+            'username' => 'required',
+            'nama_lengkap' => 'required',
+            'alamat' => 'required',
+            'no_telp' => 'required',
+            'shift' => 'required',
+            'check_in' => 'required',
+            'check_out' => 'required',
+            'status' => 'required',
+        ]);
+
         $user->update($request->all());
 
         return redirect()->route('users.index');
