@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('discounts', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->decimal('percentage', 5, 2);
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      */
