@@ -50,12 +50,12 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $request->validate([
-            'name' => 'required|string|max:255|unique:products,name',
+            'name' => 'required|string|max:255|unique:products,name,' . $product->id,
             'price' => 'required|integer',
             'stock' => 'required|integer',
         ]);
 
-        $product->update($request->only('name', 'price', 'stock'));
+        $product->update($request->all());
 
         return redirect()->route('products.index')->with('success', 'Data barang berhasil diupdate!');
     }
