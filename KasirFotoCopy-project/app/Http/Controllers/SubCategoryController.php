@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Services\SubCategoryService;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreSubCategoryRequest;
+use App\Http\Requests\UpdateSubCategoryRequest;
+use App\Http\Resources\SubCategoryResource;
 use Exception;
 
 class SubCategoryController extends Controller
@@ -19,22 +21,18 @@ class SubCategoryController extends Controller
     {
         $subCategories = $this->subCategoryService->getAllSubCategories();
         
-        return response()->json(['data' => $subCategories]);
+        return SubCategoryResource::collection($subCategories);
     }
 
-    public function store(Request $request)
+    public function store(StoreSubCategoryRequest $request)
     {
-        $validated = $request->validate([
-            'category_id' => 'required|exists:categories,id',
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string'
-        ]);
+        $validated = $request->validated();
 
         $subCategory = $this->subCategoryService->createSubCategory($validated);
         
         return response()->json([
             'message' => 'Sub Kategori berhasil dibuat',
-            'data' => $subCategory
+            'data' => new SubCategoryResource($subCategory)
         ], 201);
     }
 
@@ -46,23 +44,19 @@ class SubCategoryController extends Controller
             return response()->json(['message' => 'Sub Kategori tidak ditemukan'], 404);
         }
         
-        return response()->json(['data' => $subCategory]);
+        return new SubCategoryResource($subCategory);
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateSubCategoryRequest $request, $id)
     {
-        $validated = $request->validate([
-            'category_id' => 'sometimes|required|exists:categories,id',
-            'name' => 'sometimes|required|string|max:255',
-            'description' => 'nullable|string'
-        ]);
+        $validated = $request->validated();
 
         try {
             $subCategory = $this->subCategoryService->updateSubCategory($id, $validated);
             
             return response()->json([
                 'message' => 'Sub Kategori berhasil diubah',
-                'data' => $subCategory
+                'data' => new SubCategoryResource($subCategory)
             ]);
         } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()], 404);

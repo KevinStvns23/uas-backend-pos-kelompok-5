@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Services\DiscountService;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreDiscountRequest;
+use App\Http\Requests\UpdateDiscountRequest;
+use App\Http\Resources\DiscountResource;
 use Exception;
 
 class DiscountController extends Controller
@@ -18,21 +20,18 @@ class DiscountController extends Controller
     public function index()
     {
         $discounts = $this->discountService->getAllDiscounts();
-        return response()->json(['data' => $discounts]);
+        return DiscountResource::collection($discounts);
     }
 
-    public function store(Request $request)
+    public function store(StoreDiscountRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'percentage' => 'required|numeric|min:0|max:100'
-        ]);
+        $validated = $request->validated();
 
         $discount = $this->discountService->createDiscount($validated);
         
         return response()->json([
             'message' => 'Diskon berhasil dibuat',
-            'data' => $discount
+            'data' => new DiscountResource($discount)
         ], 201);
     }
 
@@ -43,21 +42,18 @@ class DiscountController extends Controller
         if (!$discount) {
             return response()->json(['message' => 'Diskon tidak ditemukan'], 404);
         }
-        return response()->json(['data' => $discount]);
+        return new DiscountResource($discount);
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateDiscountRequest $request, $id)
     {
-        $validated = $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-            'percentage' => 'sometimes|required|numeric|min:0|max:100'
-        ]);
+        $validated = $request->validated();
 
         try {
             $discount = $this->discountService->updateDiscount($id, $validated);
             return response()->json([
                 'message' => 'Diskon berhasil diubah',
-                'data' => $discount
+                'data' => new DiscountResource($discount)
             ]);
         } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()], 404);
@@ -73,4 +69,4 @@ class DiscountController extends Controller
             return response()->json(['message' => $e->getMessage()], 404);
         }
     }
-} 
+}

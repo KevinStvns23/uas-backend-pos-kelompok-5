@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\CategoryService; // INI BARIS YANG HILANG/SALAH
-use Illuminate\Http\Request;
+use App\Services\CategoryService;
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
+use App\Http\Resources\CategoryResource;
 use Exception;
 
 class CategoryController extends Controller
 {
-protected $categoryService;
+    protected $categoryService;
 
     public function __construct(CategoryService $categoryService)
     {
@@ -19,21 +21,18 @@ protected $categoryService;
     {
         $categories = $this->categoryService->getAllCategories();
         
-        return response()->json(['data' => $categories]);
+        return CategoryResource::collection($categories);
     }
 
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string'
-        ]);
+        $validated = $request->validated();
 
         $category = $this->categoryService->createCategory($validated);
         
         return response()->json([
             'message' => 'Kategori berhasil dibuat', 
-            'data' => $category
+            'data' => new CategoryResource($category)
         ], 201);
     }
 
@@ -45,22 +44,19 @@ protected $categoryService;
             return response()->json(['message' => 'Kategori tidak ditemukan'], 404);
         }
         
-        return response()->json(['data' => $category]);
+        return new CategoryResource($category);
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateCategoryRequest $request, $id)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string'
-        ]);
+        $validated = $request->validated();
 
         try {
             $category = $this->categoryService->updateCategory($id, $validated);
             
             return response()->json([
                 'message' => 'Kategori berhasil diubah', 
-                'data' => $category
+                'data' => new CategoryResource($category)
             ]);
         } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()], 404);
