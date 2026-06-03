@@ -13,7 +13,7 @@
 
 <form method="POST" action="{{ route('products.update', $product) }}">
     @csrf @method('PUT')
-    <p>ID Produk: {{ $product->id }}</p>
+    <p>ID Produk: PRD-{{ sprintf('%03d', $product->id) }}</p>
     <p>Nama Barang: <input type="text" name="name" value="{{ $product->name }}" required></p>
     <p>Harga (Rp): <input type="number" name="price" value="{{ $product->price }}" min="0" required></p>
     <p>Stok: <input type="number" name="stock" value="{{ $product->stock }}" min="0" required></p>
