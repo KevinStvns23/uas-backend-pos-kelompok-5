@@ -11,7 +11,7 @@
 <table border="1">
     <thead>
         <tr>
-            <th>No</th>
+            <th>ID</th>
             <th>Nama Barang</th>
             <th>Harga Jual</th>
             <th>Stok</th>
@@ -21,7 +21,7 @@
     <tbody>
         @foreach($products as $product)
         <tr>
-            <td>{{ $loop->iteration }}</td>
+            <td>{{ $product->id }}</td>
             <td>{{ $product->name }}</td>
             <td>Rp {{ number_format($product->price, 0, ',', '.') }}</td>
             <td>

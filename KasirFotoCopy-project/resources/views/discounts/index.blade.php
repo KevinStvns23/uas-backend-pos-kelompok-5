@@ -10,7 +10,7 @@
 <table border="1">
     <thead>
         <tr>
-            <th>No</th>
+            <th>ID</th>
             <th>Nama Promo</th>
             <th>Diskon (%)</th>
             <th>Status</th>
@@ -20,7 +20,7 @@
     <tbody>
         @foreach($discounts as $discount)
         <tr>
-            <td>{{ $loop->iteration }}</td>
+            <td>{{ $discount->id }}</td>
             <td>{{ $discount->promo_name }}</td>
             <td>{{ $discount->percentage }}%</td>
             <td>

@@ -10,7 +10,7 @@
 <table border="1">
     <thead>
         <tr>
-            <th>No</th>
+            <th>ID</th>
             <th>Nama Satuan</th>
             <th>Keterangan</th>
             <th>Aksi</th>
@@ -19,7 +19,7 @@
     <tbody>
         @foreach($units as $unit)
         <tr>
-            <td>{{ $loop->iteration }}</td>
+            <td>{{ $unit->id }}</td>
             <td>{{ $unit->name }}</td>
             <td>{{ $unit->description }}</td>
             <td>
