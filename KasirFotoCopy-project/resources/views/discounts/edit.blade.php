@@ -13,7 +13,7 @@
 
 <form method="POST" action="{{ route('discounts.update', $discount) }}">
     @csrf @method('PUT')
-    <p>ID Promo: {{ $discount->id }}</p>
+    <p>ID Promo: DSC-{{ sprintf('%03d', $discount->id) }}</p>
     <p>Nama Promo: <input type="text" name="promo_name" value="{{ $discount->promo_name }}" required></p>
     <p>Diskon (%): <input type="number" name="percentage" value="{{ $discount->percentage }}" min="1" max="100" required></p>
     <p>Status:

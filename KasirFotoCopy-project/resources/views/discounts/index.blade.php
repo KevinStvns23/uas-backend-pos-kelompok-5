@@ -20,7 +20,7 @@
     <tbody>
         @foreach($discounts as $discount)
         <tr>
-            <td>{{ $discount->id }}</td>
+            <td>DSC-{{ sprintf('%03d', $discount->id) }}</td>
             <td>{{ $discount->promo_name }}</td>
             <td>{{ $discount->percentage }}%</td>
             <td>
