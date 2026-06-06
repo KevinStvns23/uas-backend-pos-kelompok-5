@@ -3,74 +3,68 @@
 namespace App\Http\Controllers;
 
 use App\Services\SubCategoryService;
+use App\Services\CategoryService;
 use App\Http\Requests\StoreSubCategoryRequest;
 use App\Http\Requests\UpdateSubCategoryRequest;
-use App\Http\Resources\SubCategoryResource;
-use Exception;
 
 class SubCategoryController extends Controller
 {
     protected $subCategoryService;
+    protected $categoryService;
 
-    public function __construct(SubCategoryService $subCategoryService)
+    public function __construct(SubCategoryService $subCategoryService, CategoryService $categoryService)
     {
         $this->subCategoryService = $subCategoryService;
+        $this->categoryService = $categoryService;
     }
 
     public function index()
     {
         $subCategories = $this->subCategoryService->getAllSubCategories();
+        $categories = $this->categoryService->getAllCategories();
         
-        return SubCategoryResource::collection($subCategories);
+        return view('sub-categories', compact('subCategories', 'categories'));
     }
 
     public function store(StoreSubCategoryRequest $request)
     {
         $validated = $request->validated();
-
-        $subCategory = $this->subCategoryService->createSubCategory($validated);
+        $this->subCategoryService->createSubCategory($validated);
         
-        return response()->json([
-            'message' => 'Sub Kategori berhasil dibuat',
-            'data' => new SubCategoryResource($subCategory)
-        ], 201);
+        return redirect()->route('sub-categories.index')->with('success', 'Sub Kategori berhasil dibuat');
     }
 
     public function show($id)
     {
         $subCategory = $this->subCategoryService->getSubCategoryById($id);
-        
         if (!$subCategory) {
-            return response()->json(['message' => 'Sub Kategori tidak ditemukan'], 404);
+            return redirect()->route('sub-categories.index')->with('error', 'Sub Kategori tidak ditemukan');
         }
-        
-        return new SubCategoryResource($subCategory);
+        return view('sub-categories_show', compact('subCategory'));
+    }
+
+    public function edit($id)
+    {
+        $subCategory = $this->subCategoryService->getSubCategoryById($id);
+        if (!$subCategory) {
+            return redirect()->route('sub-categories.index')->with('error', 'Sub Kategori tidak ditemukan');
+        }
+        $categories = $this->categoryService->getAllCategories();
+        return view('sub-categories_edit', compact('subCategory', 'categories'));
     }
 
     public function update(UpdateSubCategoryRequest $request, $id)
     {
         $validated = $request->validated();
-
-        try {
-            $subCategory = $this->subCategoryService->updateSubCategory($id, $validated);
-            
-            return response()->json([
-                'message' => 'Sub Kategori berhasil diubah',
-                'data' => new SubCategoryResource($subCategory)
-            ]);
-        } catch (Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 404);
-        }
+        $this->subCategoryService->updateSubCategory($id, $validated);
+        
+        return redirect()->route('sub-categories.index')->with('success', 'Sub Kategori berhasil diubah');
     }
 
     public function destroy($id)
     {
-        try {
-            $this->subCategoryService->deleteSubCategory($id);
-            
-            return response()->json(['message' => 'Sub Kategori berhasil dihapus']);
-        } catch (Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 404);
-        }
+        $this->subCategoryService->deleteSubCategory($id);
+        
+        return redirect()->route('sub-categories.index')->with('success', 'Sub Kategori berhasil dihapus');
     }
 }

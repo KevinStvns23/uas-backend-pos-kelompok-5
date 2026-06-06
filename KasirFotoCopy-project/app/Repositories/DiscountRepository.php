@@ -8,12 +8,12 @@ class DiscountRepository
 {
     public function getAll()
     {
-        return Discount::all();
+        return Discount::with('products')->get();
     }
 
     public function getById($id)
     {
-        return Discount::find($id);
+        return Discount::with('products')->find($id);
     }
 
     public function create(array $data)

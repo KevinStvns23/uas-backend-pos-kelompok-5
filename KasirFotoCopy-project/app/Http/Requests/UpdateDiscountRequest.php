@@ -14,9 +14,9 @@ class UpdateDiscountRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'percentage' => 'required|numeric|min:0|max:100',
-            'description' => 'nullable|string'
+            'promo_name' => 'required|string|max:255',
+            'percentage' => 'required|integer|min:0|max:100',
+            'is_active' => 'required|boolean'
         ];
     }
 }

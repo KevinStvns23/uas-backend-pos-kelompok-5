@@ -6,23 +6,17 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('discounts', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->decimal('percentage', 5, 2);
-            $table->text('description')->nullable();
+            $table->string('promo_name');
+            $table->integer('percentage');
+            $table->boolean('is_active');
             $table->timestamps();
-            
         });
     }
-    /**
-     * Reverse the migrations.
-     */
+
     public function down(): void
     {
         Schema::dropIfExists('discounts');

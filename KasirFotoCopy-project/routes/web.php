@@ -1,15 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\SubCategoryController;
+use App\Http\Controllers\DiscountController;
 
-Route::get('/', function () {
-    return view('categories');
-});
+Route::get('/', [CategoryController::class, 'index']);
 
-Route::get('/sub-categories', function () {
-    return view('sub-categories');
-});
-
-Route::get('/discounts', function () {
-    return view('discounts');
-});
+Route::resource('categories', CategoryController::class);
+Route::resource('sub-categories', SubCategoryController::class);
+Route::resource('discounts', DiscountController::class);

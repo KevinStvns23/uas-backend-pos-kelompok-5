@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Services\DiscountService;
 use App\Http\Requests\StoreDiscountRequest;
 use App\Http\Requests\UpdateDiscountRequest;
-use App\Http\Resources\DiscountResource;
-use Exception;
 
 class DiscountController extends Controller
 {
@@ -20,53 +18,38 @@ class DiscountController extends Controller
     public function index()
     {
         $discounts = $this->discountService->getAllDiscounts();
-        return DiscountResource::collection($discounts);
+        return view('discounts', compact('discounts'));
     }
 
     public function store(StoreDiscountRequest $request)
     {
         $validated = $request->validated();
-
-        $discount = $this->discountService->createDiscount($validated);
+        $this->discountService->createDiscount($validated);
         
-        return response()->json([
-            'message' => 'Diskon berhasil dibuat',
-            'data' => new DiscountResource($discount)
-        ], 201);
+        return redirect()->route('discounts.index')->with('success', 'Diskon berhasil dibuat');
     }
 
     public function show($id)
     {
         $discount = $this->discountService->getDiscountById($id);
-        
         if (!$discount) {
-            return response()->json(['message' => 'Diskon tidak ditemukan'], 404);
+            return redirect()->route('discounts.index')->with('error', 'Diskon tidak ditemukan');
         }
-        return new DiscountResource($discount);
+        return view('discounts_show', compact('discount'));
     }
 
     public function update(UpdateDiscountRequest $request, $id)
     {
         $validated = $request->validated();
-
-        try {
-            $discount = $this->discountService->updateDiscount($id, $validated);
-            return response()->json([
-                'message' => 'Diskon berhasil diubah',
-                'data' => new DiscountResource($discount)
-            ]);
-        } catch (Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 404);
-        }
+        $this->discountService->updateDiscount($id, $validated);
+        
+        return redirect()->route('discounts.index')->with('success', 'Diskon berhasil diubah');
     }
 
     public function destroy($id)
     {
-        try {
-            $this->discountService->deleteDiscount($id);
-            return response()->json(['message' => 'Diskon berhasil dihapus']);
-        } catch (Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 404);
-        }
+        $this->discountService->deleteDiscount($id);
+        
+        return redirect()->route('discounts.index')->with('success', 'Diskon berhasil dihapus');
     }
 }
