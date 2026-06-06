@@ -13,7 +13,9 @@
         <tr>
             <th>ID</th>
             <th>Nama Barang</th>
+            <th>Satuan</th>
             <th>Harga Jual</th>
+            <th>Promo Diskon</th>
             <th>Stok</th>
             <th>Aksi</th>
         </tr>
@@ -23,7 +25,19 @@
         <tr>
             <td>PRD-{{ sprintf('%03d', $product->id) }}</td>
             <td>{{ $product->name }}</td>
+            
+            <td>{{ $product->unit ? $product->unit->name : 'Belum Diatur' }}</td>
+            
             <td>Rp {{ number_format($product->price, 0, ',', '.') }}</td>
+            
+            <td>
+                @if($product->discount)
+                    {{ $product->discount->promo_name }} (-{{ $product->discount->percentage }}%)
+                @else
+                    -
+                @endif
+            </td>
+            
             <td>
                 @if($product->stock < 5)
                     {{ $product->stock }} (Sisa Dikit!)
@@ -33,7 +47,7 @@
             </td>
             <td>
                 <a href="{{ route('products.edit', $product) }}">Ubah</a>
-                <form action="{{ route('products.destroy', $product) }}" method="POST">
+                <form action="{{ route('products.destroy', $product) }}" method="POST" style="display:inline;">
                     @csrf @method('DELETE')
                     <button type="submit" onclick="return confirm('Hapus barang ini?')">Hapus</button>
                 </form>

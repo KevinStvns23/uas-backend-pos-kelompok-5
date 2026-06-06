@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Unit;    
+use App\Models\Discount;  
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -17,7 +19,9 @@ class ProductController extends Controller
     // 2. Menampilkan form untuk tambah barang baru
     public function create()
     {
-        return view('products.create');
+        $units = Unit::all();
+        $discounts = Discount::where('is_active', 1)->get(); 
+        return view('products.create', compact('units', 'discounts'));
     }
 
     // 3. Menyimpan data barang baru ke database
@@ -25,11 +29,13 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255|unique:products,name',
+            'unit_id' => 'required',
+            'discount_id' => 'nullable',
             'price' => 'required|integer',
             'stock' => 'required|integer',
         ]);
 
-        Product::create($request->only('name', 'price', 'stock'));
+        Product::create($request->all());
 
         return redirect()->route('products.index')->with('success', 'Barang ATK berhasil ditambahkan!');
     }
@@ -43,7 +49,9 @@ class ProductController extends Controller
     // 5. Menampilkan form untuk mengubah data barang
     public function edit(Product $product)
     {
-        return view('products.edit', compact('product'));
+        $units = Unit::all();
+        $discounts = Discount::where('is_active', 1)->get();
+        return view('products.edit', compact('product', 'units', 'discounts'));
     }
 
     // 6. Menyimpan perubahan data barang ke database
@@ -51,6 +59,8 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255|unique:products,name,' . $product->id,
+            'unit_id' => 'required',
+            'discount_id' => 'nullable',
             'price' => 'required|integer',
             'stock' => 'required|integer',
         ]);
