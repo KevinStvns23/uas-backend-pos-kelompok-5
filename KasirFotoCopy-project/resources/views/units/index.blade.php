@@ -19,7 +19,7 @@
     <tbody>
         @foreach($units as $unit)
         <tr>
-            <td>{{ $unit->id }}</td>
+            <td>UNT-{{ sprintf('%03d', $unit->id) }}</td>
             <td>{{ $unit->name }}</td>
             <td>{{ $unit->description }}</td>
             <td>

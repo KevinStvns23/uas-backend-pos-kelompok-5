@@ -13,7 +13,7 @@
 
 <form method="POST" action="{{ route('units.update', $unit) }}">
     @csrf @method('PUT')
-    <p>ID Satuan: {{ $unit->id }}</p>
+    <p>ID Satuan: UNT-{{ sprintf('%03d', $unit->id) }}</p>
     <p>Nama Satuan: <input type="text" name="name" value="{{ $unit->name }}" required></p>
     <p>Keterangan: <input type="text" name="description" value="{{ $unit->description }}"></p>
     <button type="submit">Update</button>
