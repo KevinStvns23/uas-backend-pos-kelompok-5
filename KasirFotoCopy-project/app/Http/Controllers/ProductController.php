@@ -10,9 +10,17 @@ use Illuminate\Http\Request;
 class ProductController extends Controller
 {
     // 1. Menampilkan semua daftar barang
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::orderBy('name', 'asc')->get();
+        $search = $request->input('search');
+
+        $products = Product::when($search, function ($query, $search) 
+        {
+            return $query->where('name', 'like', '%' . $search . '%');
+        })
+        ->orderBy('name', 'asc')
+        ->paginate(5);
+    
         return view('products.index', compact('products'));
     }
 

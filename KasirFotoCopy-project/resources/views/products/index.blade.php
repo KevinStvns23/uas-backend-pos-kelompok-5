@@ -4,8 +4,14 @@
 <a href="{{ route('units.index') }}">Kelola Satuan</a>
 <br><br>
 
+<form method="GET" action="{{ route('products.index') }}" style="margin-bottom: 15px;">
+    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama barang..." required>
+    <button type="submit">Cari</button>
+    <a href="{{ route('products.index') }}"><button type="button">Reset</button></a>
+</form>
+
 @if(session('success'))
-    <p>{{ session('success') }}</p>
+    <p style="color: green;">{{ session('success') }}</p>
 @endif
 
 <table border="1">
@@ -21,15 +27,12 @@
         </tr>
     </thead>
     <tbody>
-        @foreach($products as $product)
+        @forelse($products as $product)
         <tr>
             <td>PRD-{{ sprintf('%03d', $product->id) }}</td>
             <td>{{ $product->name }}</td>
-            
             <td>{{ $product->unit ? $product->unit->name : 'Belum Diatur' }}</td>
-            
             <td>Rp {{ number_format($product->price, 0, ',', '.') }}</td>
-            
             <td>
                 @if($product->discount)
                     {{ $product->discount->promo_name }} (-{{ $product->discount->percentage }}%)
@@ -37,7 +40,6 @@
                     -
                 @endif
             </td>
-            
             <td>
                 @if($product->stock < 5)
                     {{ $product->stock }} (Sisa Dikit!)
@@ -53,6 +55,14 @@
                 </form>
             </td>
         </tr>
-        @endforeach
+        @empty
+        <tr>
+            <td colspan="7" style="text-align: center;">Tidak ada barang yang ditemukan.</td>
+        </tr>
+        @endforelse
     </tbody>
 </table>
+
+<div style="margin-top: 15px;">
+    {{ $products->appends(['search' => request('search')])->links() }}
+</div>
