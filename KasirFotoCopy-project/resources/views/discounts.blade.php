@@ -23,13 +23,28 @@
     <div class="content">
         <h1>Katalog Produk Diskon</h1>
 
+        @if(session('success'))
+            <div style="color: green; margin-bottom: 15px;">{{ session('success') }}</div>
+        @endif
+
+        @if ($errors->any())
+            <div style="color: red; border: 1px solid red; padding: 10px; margin-bottom: 15px; background: #ffeeee;">
+                <strong>Ups! Ada kesalahan:</strong>
+                <ul style="margin: 5px 0 0 15px; padding: 0;">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <table>
             <thead>
                 <tr>
                     <th>Ruang Promo</th>
-                    <th>Nama Produk</th>
-                    <th>Harga Normal</th>
-                    <th>Diskon (%)</th>
+                    <th>Produk</th>
+                    <th>Harga Asli</th>
+                    <th>Diskon</th>
                     <th>Harga Akhir</th>
                     <th>Stok</th>
                 </tr>

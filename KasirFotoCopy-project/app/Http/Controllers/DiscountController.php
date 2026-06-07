@@ -29,15 +29,6 @@ class DiscountController extends Controller
         return redirect()->route('discounts.index')->with('success', 'Diskon berhasil dibuat');
     }
 
-    public function show($id)
-    {
-        $discount = $this->discountService->getDiscountById($id);
-        if (!$discount) {
-            return redirect()->route('discounts.index')->with('error', 'Diskon tidak ditemukan');
-        }
-        return view('discounts_show', compact('discount'));
-    }
-
     public function update(UpdateDiscountRequest $request, $id)
     {
         $validated = $request->validated();

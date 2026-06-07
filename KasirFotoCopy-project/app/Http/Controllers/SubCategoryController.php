@@ -34,15 +34,6 @@ class SubCategoryController extends Controller
         return redirect()->route('sub-categories.index')->with('success', 'Sub Kategori berhasil dibuat');
     }
 
-    public function show($id)
-    {
-        $subCategory = $this->subCategoryService->getSubCategoryById($id);
-        if (!$subCategory) {
-            return redirect()->route('sub-categories.index')->with('error', 'Sub Kategori tidak ditemukan');
-        }
-        return view('sub-categories_show', compact('subCategory'));
-    }
-
     public function edit($id)
     {
         $subCategory = $this->subCategoryService->getSubCategoryById($id);

@@ -19,6 +19,17 @@
 
     <div class="content">
         <h1>Edit Kategori</h1>
+
+        @if ($errors->any())
+            <div style="color: red; border: 1px solid red; padding: 10px; margin-bottom: 15px; background: #ffeeee;">
+                <strong>Ups! Ada kesalahan:</strong>
+                <ul style="margin: 5px 0 0 15px; padding: 0;">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         
         <form action="{{ route('categories.update', $category->id) }}" method="POST">
             @csrf
@@ -34,8 +45,7 @@
             <textarea name="description" rows="3">{{ $category->description }}</textarea>
             <br><br>
             
-            <button type="submit">Update Data</button>
-            <a href="{{ route('categories.index') }}" style="margin-left: 10px;">Batal</a>
+            <button type="submit">Simpan</button>
         </form>
     </div>
 </body>

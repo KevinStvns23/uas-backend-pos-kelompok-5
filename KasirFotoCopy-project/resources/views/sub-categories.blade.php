@@ -26,15 +26,23 @@
         @if(session('success'))
             <div style="color: green; margin-bottom: 15px;">{{ session('success') }}</div>
         @endif
-        
-        <h2>Form Tambah Sub-Kategori</h2>
+
+        @if ($errors->any())
+            <div style="color: red; border: 1px solid red; padding: 10px; margin-bottom: 15px; background: #ffeeee;">
+                <strong>Ups! Ada kesalahan:</strong>
+                <ul style="margin: 5px 0 0 15px; padding: 0;">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <form action="{{ route('sub-categories.store') }}" method="POST">
             @csrf
-            
             Kategori Induk:
             <br>
             <select name="category_id" required>
-                <option value="">-- Pilih Kategori --</option>
                 @foreach($categories as $cat)
                     <option value="{{ $cat->id }}">{{ $cat->name }}</option>
                 @endforeach
