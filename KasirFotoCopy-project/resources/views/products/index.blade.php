@@ -19,6 +19,8 @@
         <tr>
             <th>ID</th>
             <th>Nama Barang</th>
+            <th>Kategori</th>
+            <th>Sub-Kategori</th>
             <th>Satuan</th>
             <th>Harga Jual</th>
             <th>Promo Diskon</th>
@@ -31,6 +33,8 @@
         <tr>
             <td>PRD-{{ sprintf('%03d', $product->id) }}</td>
             <td>{{ $product->name }}</td>
+            <td>{{ $product->category ? $product->category->name : '-' }}</td>
+            <td>{{ $product->subCategory ? $product->subCategory->name : '-' }}</td>
             <td>{{ $product->unit ? $product->unit->name : 'Belum Diatur' }}</td>
             <td>Rp {{ number_format($product->price, 0, ',', '.') }}</td>
             <td>
@@ -57,7 +61,7 @@
         </tr>
         @empty
         <tr>
-            <td colspan="7" style="text-align: center;">Tidak ada barang yang ditemukan.</td>
+            <td colspan="9" style="text-align: center;">Tidak ada barang yang ditemukan.</td>
         </tr>
         @endforelse
     </tbody>
