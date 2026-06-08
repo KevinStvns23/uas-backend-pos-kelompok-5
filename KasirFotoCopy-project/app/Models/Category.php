@@ -9,12 +9,15 @@ class Category extends Model
 {
     use HasFactory;
 
-    // Menentukan kolom yang boleh diisi
     protected $fillable = ['name', 'description'];
 
-    // Relasi One-to-Many ke SubCategory
     public function subCategories()
     {
         return $this->hasMany(SubCategory::class);
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
     }
 }

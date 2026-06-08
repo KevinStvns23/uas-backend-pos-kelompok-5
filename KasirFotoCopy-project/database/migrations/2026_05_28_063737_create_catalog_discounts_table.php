@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('discounts', function (Blueprint $table) {
+        Schema::create('catalog_discounts', function (Blueprint $table) {
             $table->id();
             $table->string('promo_name');
             $table->integer('percentage');
@@ -19,6 +19,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('discounts');
+        Schema::dropIfExists('catalog_discounts');
     }
 };

@@ -14,7 +14,7 @@
         <h3>Menu Kasir</h3>
         <a href="/categories">Kategori</a>
         <a href="/sub-categories" style="font-weight: bold; background: #e0e0e0;">Sub-Kategori</a>
-        <a href="/discounts">Diskon</a>
+        <a href="/catalog-discounts">Katalog Diskon</a>
     </div>
 
     <div class="content">

@@ -2,28 +2,28 @@
 
 namespace App\Repositories;
 
-use App\Models\Discount;
+use App\Models\CatalogDiscount;
 
-class DiscountRepository
+class CatalogDiscountRepository
 {
     public function getAll()
     {
-        return Discount::with('products')->get();
+        return CatalogDiscount::with('products')->get();
     }
 
     public function getById($id)
     {
-        return Discount::with('products')->find($id);
+        return CatalogDiscount::with('products')->find($id);
     }
 
     public function create(array $data)
     {
-        return Discount::create($data);
+        return CatalogDiscount::create($data);
     }
 
     public function update($id, array $data)
     {
-        $discount = Discount::find($id);
+        $discount = CatalogDiscount::find($id);
         if ($discount) {
             $discount->update($data);
             return $discount;
@@ -33,7 +33,7 @@ class DiscountRepository
 
     public function delete($id)
     {
-        $discount = Discount::find($id);
+        $discount = CatalogDiscount::find($id);
         if ($discount) {
             return $discount->delete();
         }
