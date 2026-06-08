@@ -70,6 +70,7 @@
                     <td>{{ $category->name }}</td>
                     <td>{{ $category->description }}</td>
                     <td>
+                        <a href="{{ route('categories.show', $category->id) }}" style="text-decoration: none; padding: 2px 8px; border: 1px solid green; color: green; margin-right: 5px;">Lihat Sub-Kategori</a>
                         <a href="{{ route('categories.edit', $category->id) }}" style="text-decoration: none; padding: 2px 8px; border: 1px solid blue; color: blue; margin-right: 5px;">Edit</a>
                         
                         <form action="{{ route('categories.destroy', $category->id) }}" method="POST" style="display:inline;">

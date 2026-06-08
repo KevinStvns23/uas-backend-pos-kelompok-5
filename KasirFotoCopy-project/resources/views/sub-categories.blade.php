@@ -81,6 +81,7 @@
                     <td>{{ $subCategory->name }}</td>
                     <td>{{ $subCategory->description }}</td>
                     <td>
+                        <a href="{{ route('sub-categories.show', $subCategory->id) }}" style="text-decoration: none; padding: 2px 8px; border: 1px solid green; color: green; margin-right: 5px;">Lihat Produk</a>
                         <a href="{{ route('sub-categories.edit', $subCategory->id) }}" style="text-decoration: none; padding: 2px 8px; border: 1px solid blue; color: blue; margin-right: 5px;">Edit</a>
                         
                         <form action="{{ route('sub-categories.destroy', $subCategory->id) }}" method="POST" style="display:inline;">

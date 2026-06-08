@@ -29,6 +29,15 @@ class CategoryController extends Controller
         return redirect()->route('categories.index')->with('success', 'Kategori berhasil dibuat');
     }
 
+    public function show($id)
+    {
+        $category = $this->categoryService->getCategoryById($id);
+        if (!$category) {
+            return redirect()->route('categories.index')->with('error', 'Kategori tidak ditemukan');
+        }
+        return view('categories_show', compact('category'));
+    }
+
     public function edit($id)
     {
         $category = $this->categoryService->getCategoryById($id);
