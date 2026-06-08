@@ -18,6 +18,28 @@
     
     <p>Nama Barang: <input type="text" name="name" value="{{ $product->name }}" required></p>
     
+    <p>Kategori: 
+    <select name="category_id">
+        <option value="">-- Tanpa Kategori --</option>
+        @foreach($categories as $category)
+            <option value="{{ $category->id }}" {{ $product->category_id == $category->id ? 'selected' : '' }}>
+                {{ $category->name }}
+            </option>
+        @endforeach
+    </select>
+    </p>
+
+    <p>Sub-Kategori: 
+    <select name="sub_category_id">
+        <option value="">-- Tanpa Sub-Kategori --</option>
+        @foreach($subCategories as $sub)
+            <option value="{{ $sub->id }}" {{ $product->sub_category_id == $sub->id ? 'selected' : '' }}>
+                {{ $sub->name }}
+            </option>
+        @endforeach
+    </select>
+    </p>
+
     <p>Satuan: 
         <select name="unit_id" required>
             <option value="">-- Pilih Satuan --</option>

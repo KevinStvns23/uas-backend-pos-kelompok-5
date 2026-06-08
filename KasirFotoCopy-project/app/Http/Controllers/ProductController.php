@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\SubCategory;
 use App\Models\Product;
 use App\Models\Unit;    
 use App\Models\Discount;  
@@ -29,7 +31,10 @@ class ProductController extends Controller
     {
         $units = Unit::all();
         $discounts = Discount::where('is_active', 1)->get(); 
-        return view('products.create', compact('units', 'discounts'));
+        $categories = Category::all(); 
+        $subCategories = SubCategory::all(); 
+
+        return view('products.create', compact('units', 'discounts', 'categories', 'subCategories'));
     }
 
     // 3. Menyimpan data barang baru ke database
@@ -59,7 +64,11 @@ class ProductController extends Controller
     {
         $units = Unit::all();
         $discounts = Discount::where('is_active', 1)->get();
-        return view('products.edit', compact('product', 'units', 'discounts'));
+
+        $categories = Category::all(); 
+        $subCategories = SubCategory::all();
+
+        return view('products.edit', compact('product', 'units', 'discounts', 'categories', 'subCategories'));
     }
 
     // 6. Menyimpan perubahan data barang ke database
