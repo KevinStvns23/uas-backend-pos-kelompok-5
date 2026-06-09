@@ -2,40 +2,36 @@
 <html>
 <head>
     <title>Manajemen Sub-Kategori</title>
-    <style>
-        body { margin: 0; display: flex; font-family: Arial, sans-serif; }
-        .sidebar { width: 200px; background: #f4f4f4; padding: 15px; height: 100vh; border-right: 1px solid #ccc; }
-        .sidebar a { display: block; padding: 10px; margin-bottom: 5px; text-decoration: none; color: black; border: 1px solid #ccc; background: white; }
-        .content { padding: 20px; flex: 1; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        table, th, td { border: 1px solid #ccc; }
-        th, td { padding: 10px; text-align: left; }
-    </style>
 </head>
 <body>
-    <div class="sidebar">
-        <h3>Menu Kasir</h3>
-        <a href="/categories">Kategori</a>
-        <a href="/sub-categories" style="font-weight: bold; background: #e0e0e0;">Sub-Kategori</a>
-        <a href="/catalog-discounts">Katalog Diskon</a>
-    </div>
+    <nav>
+        <h3>Menu Utama</h3>
+        <ul>
+            <li><a href="/categories">Kategori</a></li>
+            <li><b>Sub-Kategori</b></li>
+            <li><a href="/catalog-discounts">Katalog Diskon</a></li>
+        </ul>
+    </nav>
+    <hr>
 
-    <div class="content">
+    <div>
         <h1>Manajemen Sub-Kategori</h1>
 
         @if(session('success'))
-            <div style="color: green; margin-bottom: 15px;">{{ session('success') }}</div>
+            <div><b>Berhasil:</b> {{ session('success') }}</div>
+            <br>
         @endif
 
         @if ($errors->any())
-            <div style="color: red; border: 1px solid red; padding: 10px; margin-bottom: 15px; background: #ffeeee;">
-                <strong>Ups! Ada kesalahan:</strong>
-                <ul style="margin: 5px 0 0 15px; padding: 0;">
+            <div>
+                <b>Terjadi kesalahan pada input:</b>
+                <ul>
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
                 </ul>
             </div>
+            <br>
         @endif
 
         <form action="{{ route('sub-categories.store') }}" method="POST">
@@ -63,7 +59,7 @@
         </form>
 
         <h2>Daftar Sub-Kategori</h2>
-        <table>
+        <table border="1" cellpadding="5" cellspacing="0">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -81,12 +77,13 @@
                     <td>{{ $subCategory->name }}</td>
                     <td>{{ $subCategory->description }}</td>
                     <td>
-                        <a href="{{ route('sub-categories.edit', $subCategory->id) }}" style="text-decoration: none; padding: 2px 8px; border: 1px solid blue; color: blue; margin-right: 5px;">Edit</a>
+                        <a href="{{ route('sub-categories.show', $subCategory->id) }}">[Lihat Produk]</a>
+                        <a href="{{ route('sub-categories.edit', $subCategory->id) }}">[Ubah]</a>
                         
                         <form action="{{ route('sub-categories.destroy', $subCategory->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" onclick="return confirm('Hapus sub-kategori ini?')">Hapus</button>
+                            <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus sub-kategori ini?')">Hapus</button>
                         </form>
                     </td>
                 </tr>

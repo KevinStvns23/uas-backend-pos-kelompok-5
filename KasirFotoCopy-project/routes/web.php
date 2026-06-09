@@ -21,6 +21,6 @@ Route::resource('discounts', DiscountController::class);
 Route::resource('units', UnitController::class);
 
 //Kategori
-Route::resource('categories', CategoryController::class)->except(['show']);
-Route::resource('sub-categories', SubCategoryController::class)->except(['show']);
+Route::resource('categories', CategoryController::class);
+Route::resource('sub-categories', SubCategoryController::class);
 Route::resource('catalog-discounts', CatalogDiscountController::class)->except(['show']);

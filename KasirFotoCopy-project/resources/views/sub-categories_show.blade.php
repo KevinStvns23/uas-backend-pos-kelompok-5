@@ -2,33 +2,26 @@
 <html>
 <head>
     <title>Detail Sub-Kategori</title>
-    <style>
-        body { margin: 0; display: flex; font-family: Arial, sans-serif; }
-        .sidebar { width: 200px; background: #f4f4f4; padding: 15px; height: 100vh; border-right: 1px solid #ccc; }
-        .sidebar a { display: block; padding: 10px; margin-bottom: 5px; text-decoration: none; color: black; border: 1px solid #ccc; background: white; }
-        .content { padding: 20px; flex: 1; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        table, th, td { border: 1px solid #ccc; }
-        th, td { padding: 10px; text-align: left; }
-        .btn-back { display: inline-block; padding: 10px 15px; background: #ccc; text-decoration: none; color: black; margin-bottom: 20px; }
-    </style>
 </head>
 <body>
-    <div class="sidebar">
-        <h3>Menu Kasir</h3>
-        <a href="/categories">Kategori</a>
-        <a href="/sub-categories" style="font-weight: bold; background: #e0e0e0;">Sub-Kategori</a>
-        <a href="/catalog-discounts">Katalog Diskon</a>
-    </div>
+    <nav>
+        <h3>Menu Utama</h3>
+        <ul>
+            <li><a href="/categories">Kategori</a></li>
+            <li><b>Sub-Kategori</b></li>
+            <li><a href="/catalog-discounts">Katalog Diskon</a></li>
+        </ul>
+    </nav>
+    <hr>
 
-    <div class="content">
-        <a href="{{ route('sub-categories.index') }}" class="btn-back">Kembali ke Daftar Sub-Kategori</a>
+    <div>
+        <a href="{{ route('sub-categories.index') }}">[Kembali ke Daftar Sub-Kategori]</a>
         
         <h1>Sub-Kategori: {{ $subCategory->name }}</h1>
         <p><strong>Deskripsi:</strong> {{ $subCategory->description }}</p>
 
         <h2>Daftar Produk</h2>
-        <table>
+        <table border="1" cellpadding="5" cellspacing="0">
             <thead>
                 <tr>
                     <th>Nama Produk</th>
@@ -46,12 +39,12 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="3" style="text-align: center; font-style: italic;">Belum ada produk dalam sub-kategori ini.</td>
+                        <td colspan="3">Tidak ada produk yang tersedia dalam sub-kategori ini.</td>
                     </tr>
                     @endforelse
                 @else
                     <tr>
-                        <td colspan="3" style="text-align: center; font-style: italic;">Belum ada produk dalam sub-kategori ini.</td>
+                        <td colspan="3">Tidak ada produk yang tersedia dalam sub-kategori ini.</td>
                     </tr>
                 @endif
             </tbody>

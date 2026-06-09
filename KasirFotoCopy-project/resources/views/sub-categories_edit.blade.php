@@ -1,34 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Edit Sub-Kategori</title>
-    <style>
-        body { margin: 0; display: flex; font-family: Arial, sans-serif; }
-        .sidebar { width: 200px; background: #f4f4f4; padding: 15px; height: 100vh; border-right: 1px solid #ccc; }
-        .sidebar a { display: block; padding: 10px; margin-bottom: 5px; text-decoration: none; color: black; border: 1px solid #ccc; background: white; }
-        .content { padding: 20px; flex: 1; }
-    </style>
+    <title>Ubah Sub-Kategori</title>
 </head>
 <body>
-    <div class="sidebar">
-        <h3>Menu Kasir</h3>
-        <a href="/categories">Kategori</a>
-        <a href="/sub-categories" style="font-weight: bold; background: #e0e0e0;">Sub-Kategori</a>
-        <a href="/catalog-discounts">Katalog Diskon</a>
-    </div>
+    <nav>
+        <h3>Menu Utama</h3>
+        <ul>
+            <li><a href="/categories">Kategori</a></li>
+            <li><b>Sub-Kategori</b></li>
+            <li><a href="/catalog-discounts">Katalog Diskon</a></li>
+        </ul>
+    </nav>
+    <hr>
 
-    <div class="content">
-        <h1>Edit Sub-Kategori</h1>
+    <div>
+        <h1>Ubah Sub-Kategori</h1>
 
         @if ($errors->any())
-            <div style="color: red; border: 1px solid red; padding: 10px; margin-bottom: 15px; background: #ffeeee;">
-                <strong>Ups! Ada kesalahan:</strong>
-                <ul style="margin: 5px 0 0 15px; padding: 0;">
+            <div>
+                <b>Terjadi kesalahan pada input:</b>
+                <ul>
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
                 </ul>
             </div>
+            <br>
         @endif
         
         <form action="{{ route('sub-categories.update', $subCategory->id) }}" method="POST">
@@ -56,7 +54,7 @@
             <textarea name="description" rows="3">{{ $subCategory->description }}</textarea>
             <br><br>
             
-            <button type="submit">Simpan</button>
+            <button type="submit">Simpan Perubahan</button>
         </form>
     </div>
 </body>
