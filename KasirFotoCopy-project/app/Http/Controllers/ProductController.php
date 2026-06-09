@@ -31,10 +31,11 @@ class ProductController extends Controller
     {
         $units = Unit::all();
         $discounts = Discount::where('is_active', 1)->get(); 
-        $categories = Category::all(); 
-        $subCategories = SubCategory::all(); 
 
-        return view('products.create', compact('units', 'discounts', 'categories', 'subCategories'));
+        $categories = Category::all(); 
+        $subCategoriesGrouped = SubCategory::with('category')->get()->groupBy('category_id');
+
+        return view('products.create', compact('units', 'discounts', 'categories', 'subCategoriesGrouped'));
     }
 
     // 3. Menyimpan data barang baru ke database
@@ -42,13 +43,25 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255|unique:products,name',
+            'sub_category_id' => 'nullable|exists:sub_categories,id',
             'unit_id' => 'required',
             'discount_id' => 'nullable',
             'price' => 'required|integer',
             'stock' => 'required|integer',
         ]);
 
-        Product::create($request->all());
+        $categoryId = null;
+        if ($request->filled('sub_category_id')) {
+            $subCategory = SubCategory::find($request->sub_category_id);
+            if ($subCategory) {
+                $categoryId = $subCategory->category_id;
+            }
+        }
+
+        $data = $request->all();
+        $data['category_id'] = $categoryId;
+
+        Product::create($data);
 
         return redirect()->route('products.index')->with('success', 'Barang ATK berhasil ditambahkan!');
     }
@@ -66,9 +79,9 @@ class ProductController extends Controller
         $discounts = Discount::where('is_active', 1)->get();
 
         $categories = Category::all(); 
-        $subCategories = SubCategory::all();
+        $subCategoriesGrouped = SubCategory::with('category')->get()->groupBy('category_id');
 
-        return view('products.edit', compact('product', 'units', 'discounts', 'categories', 'subCategories'));
+        return view('products.edit', compact('product', 'units', 'discounts', 'categories', 'subCategoriesGrouped'));
     }
 
     // 6. Menyimpan perubahan data barang ke database
@@ -76,13 +89,25 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255|unique:products,name,' . $product->id,
+            'sub_category_id' => 'nullable|exists:sub_categories,id',
             'unit_id' => 'required',
             'discount_id' => 'nullable',
             'price' => 'required|integer',
             'stock' => 'required|integer',
         ]);
 
-        $product->update($request->all());
+        $categoryId = null;
+        if ($request->filled('sub_category_id')) {
+            $subCategory = SubCategory::find($request->sub_category_id);
+            if ($subCategory) {
+                $categoryId = $subCategory->category_id;
+            }
+        }
+
+        $data = $request->all();
+        $data['category_id'] = $categoryId;
+
+        $product->update($data);
 
         return redirect()->route('products.index')->with('success', 'Data barang berhasil diupdate!');
     }

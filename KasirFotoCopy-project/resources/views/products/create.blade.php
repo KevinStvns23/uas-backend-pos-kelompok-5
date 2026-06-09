@@ -15,21 +15,26 @@
     @csrf
     <p>Nama Barang: <input type="text" name="name" required></p>
     
-    <p>Kategori: 
-    <select name="category_id">
-        <option value="">-- Tanpa Kategori --</option>
+    <p>Kategori Barang: 
+    <select name="sub_category_id">
+        <option value="">-- Pilih Kategori --</option>
+        
         @foreach($categories as $category)
-            <option value="{{ $category->id }}">{{ $category->name }}</option>
+            
+            @if(isset($subCategoriesGrouped[$category->id]))
+                
+                <optgroup label="--- {{ strtoupper($category->name) }} ---">
+                    
+                    @foreach($subCategoriesGrouped[$category->id] as $sub)
+                        <option value="{{ $sub->id }}">{{ $sub->name }}</option>
+                    @endforeach
+                
+                </optgroup>
+                
+            @endif
+            
         @endforeach
     </select>
-    </p>
-
-    <p>Sub-Kategori: 
-    <select name="sub_category_id">
-        <option value="">-- Tanpa Sub-Kategori --</option>
-        @foreach($subCategories as $sub)
-            <option value="{{ $sub->id }}">{{ $sub->name }}</option>
-        @endforeach </select>
     </p>
 
     <p>Satuan: 
