@@ -1,12 +1,18 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\DiscountController;
+use App\Http\Controllers\UnitController;
 use App\Http\Controllers\OrderController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/products');
 });
 
+Route::resource('products', ProductController::class);
+Route::resource('discounts', DiscountController::class);
+Route::resource('units', UnitController::class);
 Route::get('/orders/create', [OrderController::class, 'create']);
 
 Route::post('/orders/add', [OrderController::class, 'addToCart']);
