@@ -10,12 +10,15 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {
-        Schema::create('stock_reports', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
-    }
+{
+    Schema::create('stock_reports', function (Blueprint $table) {
+        $table->id();
+        $table->string('nama_barang');
+        $table->integer('sisa_stok');
+        $table->string('status_peringatan'); // ex: "Stok Menipis" atau "Habis"
+        $table->timestamps();
+    });
+}
 
     /**
      * Reverse the migrations.
