@@ -7,6 +7,14 @@
 
     <h1>Kasir Order</h1>
 
+    @if(session('error'))
+        <div style="color:red; margin-bottom:10px;">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    <br>
+
     <form action="/orders/add" method="POST">
         @csrf
         <div>

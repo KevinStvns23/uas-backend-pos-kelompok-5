@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
+use App\Models\OrderDetail;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -13,40 +16,32 @@ class OrderController extends Controller
 
     public function addToCart(Request $request)
     {
-        $dummyProducts = [
-            1 => [
-                'name' => 'Pensil',
-                'price' => 2000
-            ],
-            2 => [
-                'name' => 'Buku',
-                'price' => 5000
-            ],
-            3 => [
-                'name' => 'Pulpen',
-                'price' => 3000
-            ],
-        ];
-
         $productId = $request->product_id;
         $quantity = $request->quantity;
 
-        // cek apakah product ada
-        if (!isset($dummyProducts[$productId])) {
+        $product = Product::find($productId);
+
+        if ($quantity > $product->stock) {
+            return redirect('/orders/create')
+                ->with(
+                    'error',
+                    'Stok '.$product->name.' hanya tersisa '.$product->stock
+                );
+        }
+
+        if (!$product) {
             return redirect('/orders/create')
                 ->with('error', 'Product tidak ditemukan');
         }
 
-        $product = $dummyProducts[$productId];
-
-        $subtotal = $product['price'] * $quantity;
+        $subtotal = $product->price * $quantity;
 
         $cart = session()->get('cart', []);
 
         $cart[] = [
             'product_id' => $productId,
-            'name' => $product['name'],
-            'price' => $product['price'],
+            'name' => $product->name,
+            'price' => $product->price,
             'quantity' => $quantity,
             'subtotal' => $subtotal
         ];
@@ -107,6 +102,29 @@ class OrderController extends Controller
 
         $finalTotal = $total - $discount;
 
+        $order = Order::create([
+            'invoice_number' => 'INV-' . time(),
+            'total_price' => $finalTotal
+        ]);
+
+        foreach ($cart as $item) {
+            OrderDetail::create([
+                'order_id'   => $order->id,
+                'product_id' => $item['product_id'],
+                'quantity'   => $item['quantity'],
+                'price'      => $item['price'],
+                'subtotal'   => $item['subtotal']
+            ]);
+        }
+
+        foreach ($cart as $item) {
+            $product = Product::find($item['product_id']);
+            if ($product) {
+                $product->stock -= $item['quantity'];
+                $product->save();
+            }
+        }
+       
         session()->put('checkout', [
             'payment_method' => $request->payment_method,
             'discount' => $discount,
