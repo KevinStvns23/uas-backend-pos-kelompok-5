@@ -13,6 +13,11 @@ return new class extends Migration
             $table->string('name');
             $table->integer('price');
             $table->integer('stock');
+            $table->foreignId('category_id')->nullable()->constrained('categories')->nullOnDelete();
+            $table->foreignId('sub_category_id')->nullable()->constrained('sub_categories')->nullOnDelete();
+            $table->foreignId('catalog_discount_id')->nullable()->constrained('catalog_discounts')->nullOnDelete();
+            $table->foreignId('unit_id')->nullable();
+            $table->foreignId('discount_id')->nullable();
             $table->timestamps();
         });
     }
