@@ -9,19 +9,28 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::all();
-
-        return view('users.index', compact('users'));
+        $user = User::all();
+        return view('user.index', compact('user'));
     }
 
     public function create()
     {
-        return view('users.create');
+        // Gembok: Hanya Owner dan Admin yang bisa melihat halaman tambah user
+        if (auth()->user()->role != 'Owner' && auth()->user()->role != 'Admin') {
+            return redirect('/user'); 
+        }
+
+        return view('user.create');
     }
 
     public function store(Request $request)
     {
-        $request->validate([
+        // Gembok lapis kedua saat menyimpan data
+        if (auth()->user()->role != 'Owner' && auth()->user()->role != 'Admin') {
+            return redirect('/user');
+        }
+
+        $validated = $request->validate([
             'username' => 'required',
             'password' => 'required',
             'nama_lengkap' => 'required',
@@ -31,26 +40,29 @@ class UserController extends Controller
             'check_in' => 'required',
             'check_out' => 'required',
             'status' => 'required',
+            'role' => 'required', // Tambahan validasi wajib isi role
         ]);
 
-        User::create($request->all());
+        $validated['password'] = bcrypt($validated['password']);
 
-        return redirect()->route('users.index');
+        User::create($validated);
+
+        return redirect()->route('user.index');
     }
 
     public function show(User $user)
     {
-        return view('users.show', compact('user'));
+        return view('user.show', compact('user'));
     }
 
     public function edit(User $user)
     {
-        return view('users.edit', compact('user'));
+        return view('user.edit', compact('user'));
     }
 
     public function update(Request $request, User $user)
     {
-        $request->validate([
+        $validated = $request->validate([
             'username' => 'required',
             'nama_lengkap' => 'required',
             'alamat' => 'required',
@@ -61,15 +73,15 @@ class UserController extends Controller
             'status' => 'required',
         ]);
 
-        $user->update($request->all());
+        $user->update($validated);
 
-        return redirect()->route('users.index');
+        return redirect()->route('user.index');
     }
 
     public function destroy(User $user)
     {
         $user->delete();
 
-        return redirect()->route('users.index');
+        return redirect()->route('user.index');
     }
 }

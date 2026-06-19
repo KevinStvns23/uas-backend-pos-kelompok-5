@@ -1,29 +1,20 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
 
-Route::get('/login', function () {
-    return view('login');
+Route::get('/', function () {
+    return redirect('/login');
 });
 
-Route::post('/login', function (Request $request) {
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 
-    if (
-        $request->email == 'admin@gmail.com' &&
-        $request->password == '12345'
-    ) {
+Route::post('/login', [AuthController::class, 'login']);
 
-        session([
-            'login_success' => true,
-            'email' => $request->email
-        ]);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-        return redirect('/users');
-    }
 
-    return back()->with('error', 'Email atau Passwordnya salah');
+Route::middleware('auth')->group(function () {
+    Route::resource('user', UserController::class);
 });
-
-Route::resource('users', UserController::class);
