@@ -4,19 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
     public function index()
     {
-        $user = User::all();
+        $user = User::orderByRaw("FIELD(role, 'Owner', 'Admin', 'Kasir')")
+                    ->orderBy('nama_lengkap', 'asc')
+                    ->get();
+
         return view('user.index', compact('user'));
     }
 
     public function create()
     {
-        // Gembok: Hanya Owner dan Admin yang bisa melihat halaman tambah user
-        if (auth()->user()->role != 'Owner' && auth()->user()->role != 'Admin') {
+        if (Auth::user()->role != 'Owner' && Auth::user()->role != 'Admin') {
             return redirect('/user'); 
         }
 
@@ -25,13 +28,12 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        // Gembok lapis kedua saat menyimpan data
-        if (auth()->user()->role != 'Owner' && auth()->user()->role != 'Admin') {
+        if (Auth::user()->role != 'Owner' && Auth::user()->role != 'Admin') {
             return redirect('/user');
         }
 
         $validated = $request->validate([
-            'username' => 'required',
+            'username' => 'required|unique:user,username',
             'password' => 'required',
             'nama_lengkap' => 'required',
             'alamat' => 'required',
@@ -40,7 +42,7 @@ class UserController extends Controller
             'check_in' => 'required',
             'check_out' => 'required',
             'status' => 'required',
-            'role' => 'required', // Tambahan validasi wajib isi role
+            'role' => 'required',
         ]);
 
         $validated['password'] = bcrypt($validated['password']);
@@ -80,8 +82,31 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
+        if (Auth::user()->role == 'Admin' && ($user->role == 'Owner' || $user->role == 'Admin')) {
+            return redirect('/user')->with('error', 'Akses ditolak.');
+        }
+
         $user->delete();
 
         return redirect()->route('user.index');
+    }
+
+    public function resetPassword(User $user)
+    {
+        if (Auth::user()->role == 'Kasir') {
+            return redirect('/user')->with('error', 'Akses ditolak.');
+        }
+
+        $user->password = bcrypt('12345');
+        $user->save();
+
+        return back()->with('success', 'Password berhasil direset ke 12345');
+    }
+
+    public function cetakData(User $user)
+    {
+       
+    return view('user.cetak', compact('user'));
+
     }
 }
