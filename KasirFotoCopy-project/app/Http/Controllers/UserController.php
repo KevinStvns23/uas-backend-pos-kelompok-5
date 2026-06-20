@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -63,22 +64,33 @@ class UserController extends Controller
     }
 
     public function update(Request $request, User $user)
-    {
-        $validated = $request->validate([
-            'username' => 'required',
-            'nama_lengkap' => 'required',
-            'alamat' => 'required',
-            'no_telp' => 'required',
-            'shift' => 'required',
-            'check_in' => 'required',
-            'check_out' => 'required',
-            'status' => 'required',
-        ]);
+{
+    $validated = $request->validate([
+        'username' => 'required',
+        'nama_lengkap' => 'required',
+        'alamat' => 'nullable',
+        'no_telp' => 'nullable',
+        'shift' => 'nullable',
+        'check_in' => 'nullable',
+        'check_out' => 'nullable',
+        'status' => 'required',
+        'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', 
+    ]);
 
-        $user->update($validated);
-
-        return redirect()->route('user.index');
+    if ($request->hasFile('foto')) {
+        if ($user->foto) {
+            Storage::delete('public/' . $user->foto);
+        }
+        
+        $path = $request->file('foto')->store('uploads', 'public');
+        $validated['foto'] = $path;
     }
+
+    
+    $user->update($validated);
+
+    return redirect()->route('user.index')->with('success', 'Data berhasil diupdate!');
+}
 
     public function destroy(User $user)
     {
@@ -109,4 +121,17 @@ class UserController extends Controller
     return view('user.cetak', compact('user'));
 
     }
+
+    public function updateStatus(Request $request, $id)
+{
+    if (auth()->user()->role !== 'Owner') {
+        return redirect()->back()->with('error', 'Hanya Owner yang bisa mengubah status!');
+    }
+
+    $user = \App\Models\User::findOrFail($id);
+    $user->status = $request->status;
+    $user->save();
+
+    return redirect()->back()->with('success', 'Status berhasil diubah menjadi ' . $request->status);
+}
 }

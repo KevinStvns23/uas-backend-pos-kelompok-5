@@ -24,7 +24,8 @@ class User extends Authenticatable
         'status',
         'role',            
         'metode_gaji',     
-        'detail_rekening', 
+        'detail_rekening',
+        'foto_profil', 
     ];
 
     protected $hidden = [

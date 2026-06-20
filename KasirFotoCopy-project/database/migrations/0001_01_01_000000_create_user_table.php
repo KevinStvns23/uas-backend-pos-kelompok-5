@@ -22,8 +22,8 @@ return new class extends Migration
             $table->string('no_telp');
 
             $table->string('shift');
-            $table->time('check_in');
-            $table->time('check_out');
+            $table->time('check_in')-> nullable();
+            $table->time('check_out')-> nullable();
 
             $table->string('status')->default('nonaktif');
             $table->string('role')->default('Kasir');
