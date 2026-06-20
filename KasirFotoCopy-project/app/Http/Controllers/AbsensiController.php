@@ -45,7 +45,6 @@ class AbsensiController extends Controller
 
     public function rekap()
     {
-        // Ambil data absensi bulan ini dan tahun ini saja, urutkan dari yang terbaru
         $absensi = Absensi::with('user')
                     ->whereMonth('tanggal', date('m'))
                     ->whereYear('tanggal', date('Y'))
