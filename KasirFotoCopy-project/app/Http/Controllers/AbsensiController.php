@@ -44,10 +44,14 @@ class AbsensiController extends Controller
     }
 
     public function rekap()
-{
-    $absensi = \App\Models\Absensi::with('user')->orderBy('tanggal', 'desc')->get();
+    {
+        // Ambil data absensi bulan ini dan tahun ini saja, urutkan dari yang terbaru
+        $absensi = Absensi::with('user')
+                    ->whereMonth('tanggal', date('m'))
+                    ->whereYear('tanggal', date('Y'))
+                    ->orderBy('tanggal', 'desc')
+                    ->get();
 
-    return view('user.rekap', compact('absensi'));
-}
-
+        return view('user.rekap', compact('absensi'));
+    }
 }
