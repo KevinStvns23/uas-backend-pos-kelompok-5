@@ -7,7 +7,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
 <body class="bg-light p-4">
-    <div class="container bg-white p-4 rounded shadow-sm">
+    
+    @include('navbar')
+
+    <div class="container bg-white p-4 rounded shadow-sm mt-3">
         
         <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
             <h2 class="m-0 text-primary"><i class="bi bi-wallet2"></i> Laporan Pendapatan</h2>
