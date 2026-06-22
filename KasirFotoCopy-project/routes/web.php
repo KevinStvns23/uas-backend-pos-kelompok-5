@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\IncomeReportController;
+use App\Http\Controllers\StockReportController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AbsensiController; 
@@ -68,3 +70,7 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/absensi/rekap', [AbsensiController::class, 'rekap'])->name('absensi.rekap');
 });
+
+Route::get('/reports/income', [IncomeReportController::class, 'index']);
+
+Route::get('/reports/stock', [StockReportController::class, 'index']);
