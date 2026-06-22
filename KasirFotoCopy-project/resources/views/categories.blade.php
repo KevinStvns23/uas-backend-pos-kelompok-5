@@ -5,17 +5,6 @@
 </head>
 <body>
     @include('navbar')
-    
-    <nav>
-        <h3>Menu Utama</h3>
-        <ul>
-            <li><b>Kategori</b></li>
-            <li><a href="/sub-categories">Sub-Kategori</a></li>
-            <li><a href="/catalog-discounts">Katalog Diskon</a></li>
-        </ul>
-    </nav>
-    <hr>
-
     <div>
         <h1>Manajemen Kategori</h1>
 

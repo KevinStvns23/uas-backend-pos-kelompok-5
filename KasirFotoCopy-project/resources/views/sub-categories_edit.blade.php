@@ -4,16 +4,7 @@
     <title>Ubah Sub-Kategori</title>
 </head>
 <body>
-    <nav>
-        <h3>Menu Utama</h3>
-        <ul>
-            <li><a href="/categories">Kategori</a></li>
-            <li><b>Sub-Kategori</b></li>
-            <li><a href="/catalog-discounts">Katalog Diskon</a></li>
-        </ul>
-    </nav>
-    <hr>
-
+    @include('navbar')
     <div>
         <h1>Ubah Sub-Kategori</h1>
 

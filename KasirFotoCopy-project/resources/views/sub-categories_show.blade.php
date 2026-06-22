@@ -4,16 +4,7 @@
     <title>Detail Sub-Kategori</title>
 </head>
 <body>
-    <nav>
-        <h3>Menu Utama</h3>
-        <ul>
-            <li><a href="/categories">Kategori</a></li>
-            <li><b>Sub-Kategori</b></li>
-            <li><a href="/catalog-discounts">Katalog Diskon</a></li>
-        </ul>
-    </nav>
-    <hr>
-
+    @include('navbar')
     <div>
         <a href="{{ route('sub-categories.index') }}">[Kembali ke Daftar Sub-Kategori]</a>
         

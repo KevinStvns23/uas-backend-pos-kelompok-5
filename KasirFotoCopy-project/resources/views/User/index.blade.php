@@ -1,3 +1,4 @@
+@include('navbar')
 <style>
     .grid-container {
         display: flex;
