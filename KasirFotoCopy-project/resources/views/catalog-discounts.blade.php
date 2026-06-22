@@ -4,6 +4,8 @@
     <title>Katalog Diskon</title>
 </head>
 <body>
+    @include('navbar')
+    
     <nav>
         <h3>Menu Utama</h3>
         <ul>

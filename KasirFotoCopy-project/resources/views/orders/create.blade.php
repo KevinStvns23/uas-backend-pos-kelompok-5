@@ -5,6 +5,8 @@
 </head>
 <body>
 
+    @include('navbar')
+
     <h1>Kasir Order</h1>
 
     @if(session('error'))

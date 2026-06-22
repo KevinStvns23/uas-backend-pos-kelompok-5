@@ -1,3 +1,4 @@
+@include('navbar')
 <h1>Manajemen Satuan Barang</h1>
 <a href="{{ route('units.create') }}">Tambah Satuan</a> | 
 <a href="{{ route('products.index') }}">Ke Produk</a>

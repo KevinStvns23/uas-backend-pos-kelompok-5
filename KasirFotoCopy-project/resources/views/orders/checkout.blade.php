@@ -49,8 +49,9 @@
 
         $discount = 0;
 
-        if(session('promo_code') == 'DISKON10') {
-            $discount = $total * 0.1;
+        if(session('promo_percentage')) {
+            $discount =
+                $total * session('promo_percentage') / 100;
         }
 
         $finalTotal = $total - $discount;
@@ -59,13 +60,23 @@
 
     <h3>Total Harga: Rp {{ $total }}</h3>
 
-    @if(session('promo_code') == 'DISKON10')
+    @if(session('promo_name'))
 
-        <h3>Diskon: 10%</h3>
+        <h3>
+            Promo:
+            {{ session('promo_name') }}
+            ({{ session('promo_percentage') }}%)
+        </h3>
 
-        <h3>Potongan Harga: Rp {{ $discount }}</h3>
+        <h3>
+            Potongan Harga:
+            Rp {{ $discount }}
+        </h3>
 
-        <h2>Total Setelah Diskon: Rp {{ $finalTotal }}</h2>
+        <h2>
+            Total Setelah Diskon:
+            Rp {{ $finalTotal }}
+        </h2>
 
     @endif
 
@@ -74,18 +85,26 @@
     <h2>Pembayaran</h2>
 
     <div>
-        <form action="/orders/apply-promo" method="POST">
+        <label>Pilih Promo</label>
 
+        <form action="/orders/apply-promo" method="POST">
             @csrf
 
-            <label>Kode Promo</label>
+            <select name="promo_code">
+                <option value="">-- Pilih Promo --</option>
 
-            <input type="text" name="promo_code">
+                @foreach($discounts as $discount)
+                    <option value="{{ $discount->promo_name }}">
+                        {{ $discount->promo_name }}
+                        ({{ $discount->percentage }}%)
+                    </option>
+                @endforeach
+
+            </select>
 
             <button type="submit">
                 Apply Promo
             </button>
-
         </form>
     </div>
 

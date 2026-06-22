@@ -1,3 +1,5 @@
+@include('navbar')
+
 <h1>Manajemen Promo Diskon</h1>
 <a href="{{ route('discounts.create') }}">Tambah Promo</a> | 
 <a href="{{ route('products.index') }}">Ke Produk</a>

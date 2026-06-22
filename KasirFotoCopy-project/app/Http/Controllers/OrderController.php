@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Models\Discount;
 
 class OrderController extends Controller
 {
@@ -81,7 +82,9 @@ class OrderController extends Controller
 
     public function showCheckout()
     {
-        return view('orders.checkout');
+        $discounts = Discount::where('is_active', 1)->get();
+
+        return view('orders.checkout', compact('discounts'));
     }
 
     public function checkout(Request $request)
@@ -96,8 +99,9 @@ class OrderController extends Controller
 
         $discount = 0;
 
-        if (session('promo_code') == 'DISKON10') {
-            $discount = $total * 0.1;
+        if (session('promo_percentage')) {
+            $discount =
+                $total * (session('promo_percentage') / 100);
         }
 
         $finalTotal = $total - $discount;
@@ -130,7 +134,7 @@ class OrderController extends Controller
             'discount' => $discount,
             'final_total' => $finalTotal,
             'total' => $total,
-            'promo_code' => session('promo_code'),
+            'promo_code' => session('promo_name'),
             'date' => now()->format('d/m/Y H:i')
         ]);
 
@@ -139,9 +143,23 @@ class OrderController extends Controller
 
     public function applyPromo(Request $request)
     {
-        session()->put('promo_code', $request->promo_code);
+        $promo = Discount::where(
+            'promo_name',
+            $request->promo_code
+        )
+        ->where('is_active', true)
+        ->first();
 
-        return redirect('/orders/checkout');
+        if (!$promo) {
+            return redirect('/orders/checkout')
+                ->with('error', 'Promo tidak ditemukan');
+        }
+
+        session()->put('promo_name', $promo->promo_name);
+        session()->put('promo_percentage', $promo->percentage);
+
+        return redirect('/orders/checkout')
+            ->with('success', 'Promo berhasil digunakan');
     }
 
     public function receipt()

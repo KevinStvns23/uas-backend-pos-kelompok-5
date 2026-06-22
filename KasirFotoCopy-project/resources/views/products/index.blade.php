@@ -1,3 +1,4 @@
+@include('navbar')
 <h1>Sistem Kasir ATK - Manajemen Produk</h1>
 <a href="{{ route('products.create') }}">Tambah Produk Baru</a> | 
 <a href="{{ route('discounts.index') }}">Kelola Diskon</a> | 
