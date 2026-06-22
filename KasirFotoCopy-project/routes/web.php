@@ -5,6 +5,28 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AbsensiController; 
 
+//Controller Milik Yovan (Produk)
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\DiscountController;
+use App\Http\Controllers\UnitController;
+
+//Controller Milik Sept (Kategori)
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\SubCategoryController;
+use App\Http\Controllers\CatalogDiscountController;
+
+//Halaman Utama
+Route::get('/', [CategoryController::class, 'index']);
+
+//Produk
+Route::resource('products', ProductController::class);
+Route::resource('discounts', DiscountController::class);
+Route::resource('units', UnitController::class);
+
+//Kategori
+Route::resource('categories', CategoryController::class);
+Route::resource('sub-categories', SubCategoryController::class);
+Route::resource('catalog-discounts', CatalogDiscountController::class)->except(['show']);
 Route::get('/', function () {
     return redirect('/login');
 });
