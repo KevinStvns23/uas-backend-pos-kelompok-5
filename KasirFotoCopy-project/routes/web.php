@@ -54,7 +54,6 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware('auth')->group(function () {
     
     Route::post('/user/{user}/reset-password', [UserController::class, 'resetPassword'])->name('user.reset-password');
-    Route::get('/user/{user}/cetak-data', [UserController::class, 'cetakData'])->name('user.cetak-data');
     
     Route::patch('/user/status/{id}', [UserController::class, 'updateStatus'])->name('user.updateStatus');
     
