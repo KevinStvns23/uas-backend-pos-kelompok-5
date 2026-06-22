@@ -18,6 +18,28 @@
     
     <p>Nama Barang: <input type="text" name="name" value="{{ $product->name }}" required></p>
     
+    <p>Kategori Barang: 
+    <select name="sub_category_id">
+        <option value="">-- Pilih Kategori --</option>
+        
+        @foreach($categories as $category)
+            @if(isset($subCategoriesGrouped[$category->id]))
+                
+                <optgroup label="--- {{ strtoupper($category->name) }} ---">
+                    
+                    @foreach($subCategoriesGrouped[$category->id] as $sub)
+                        <option value="{{ $sub->id }}" {{ $product->sub_category_id == $sub->id ? 'selected' : '' }}>
+                            {{ $sub->name }}
+                        </option>
+                    @endforeach
+                
+                </optgroup>
+                
+            @endif
+        @endforeach
+    </select>
+    </p>
+
     <p>Satuan: 
         <select name="unit_id" required>
             <option value="">-- Pilih Satuan --</option>
