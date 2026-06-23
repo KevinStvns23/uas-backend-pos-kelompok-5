@@ -171,7 +171,7 @@ class OrderController extends Controller
     {
         session()->forget('cart');
         session()->forget('checkout');
-        session()->forget('promo_code');
+        session()->forget('promo_name');
 
         return redirect('/orders/create');
     }
